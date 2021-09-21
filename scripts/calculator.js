@@ -1,1 +1,1 @@
-window.calculator = new CalcController
+window.calculato = new CalcController
