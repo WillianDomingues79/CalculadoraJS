@@ -17,6 +17,8 @@ class CalcController {
         setInterval(() => {
             this.setDisplayDateTime();
         }, 1000)
+
+        this.setLastNumberToDisplay();
     }
 
     //Função para receber as coisas e criar um array de Strings
@@ -33,11 +35,15 @@ class CalcController {
     //Apaga tudo
     clearAll() {
         this._operation = [];
+
+        this.setLastNumberToDisplay();
     }
 
     //Apaga a ultima entrada
     clearEntry() {
         this._operation.pop();
+
+        this.setLastNumberToDisplay();
 
     }
 
@@ -70,11 +76,28 @@ class CalcController {
 
     //Faz a soma de fato
     calc() {
-        let last = this._operation.pop();//retira o ultimo numero para ficar so com 2 para somar
+        let last = '';
+
+        if(this._operation.length > 3){
+            last = this._operation.pop();//retira o ultimo numero para ficar so com 2 para somar
+        }
+
         let result = eval(this._operation.join(""));
-        //Eval faz somar independente se o sinal for uma string
-        //E usa o join para poder tirar as virgulas da separação do array dos numeros
-        this._operation = [result, last];
+            //Eval faz somar independente se o sinal for uma string
+            //E usa o join para poder tirar as virgulas da separação do array dos numeros
+        
+        if (last == '%'){
+            result /= 100;
+
+            this._operation = [result];
+
+        }else{
+            
+            this._operation = [result];
+            if(last) this._operation.push(last)
+        }
+        
+        this.setLastNumberToDisplay();
     }
 
     setLastNumberToDisplay() {
@@ -86,6 +109,9 @@ class CalcController {
                 break;
             }
         }
+
+        if(!lastNumber) lastNumber = 0;
+
         this.displayCalc = lastNumber;
     
 }
@@ -117,7 +143,7 @@ addOperation(value){
             let newValue = this.getlastOperation().toString() + value.toString();
             this.setLastOperation(parseInt(newValue));
             //atualizar display
-            //this.setLastNumberToDisplay();
+            this.setLastNumberToDisplay();
         }
 
 
@@ -169,7 +195,7 @@ execBtn(value){
             break;
 
         case "igual":
-            //this.addOperation('=');
+            this.calc();
             break;
 
         case "ponto":
