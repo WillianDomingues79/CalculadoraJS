@@ -176,7 +176,7 @@ addOperation(value){
             this.pushOperation(value);
         } else {
             let newValue = this.getlastOperation().toString() + value.toString();
-            this.setLastOperation(parseFloat(newValue));
+            this.setLastOperation(newValue);
             //atualizar display
             this.setLastNumberToDisplay();
         }
@@ -194,6 +194,9 @@ setError(){
 
 addDot(){
     let lastOperation = this.getlastOperation();
+
+    if(typeof lastOperation == 'string' && lastOperation.split('').indexOf('.') > -1) return;
+
     console.log(lastOperation)
     if (this.isOperator(lastOperation) || !lastOperation) {
         this.pushOperation('0.');
