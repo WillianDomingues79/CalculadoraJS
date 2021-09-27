@@ -38,6 +38,8 @@ class CalcController {
     //Apaga tudo
     clearAll() {
         this._operation = [];
+        this._lastNumber = '';
+        this._lastOperator = '';
 
         this.setLastNumberToDisplay();
     }
@@ -164,9 +166,6 @@ addOperation(value){
             //trocar o operador
             this.setLastOperation(value);
 
-        } else if (isNaN(value)) {
-
-            console.log(value)
         } else {
             this.pushOperation(value);
             this.setLastNumberToDisplay();
@@ -177,7 +176,7 @@ addOperation(value){
             this.pushOperation(value);
         } else {
             let newValue = this.getlastOperation().toString() + value.toString();
-            this.setLastOperation(parseInt(newValue));
+            this.setLastOperation(parseFloat(newValue));
             //atualizar display
             this.setLastNumberToDisplay();
         }
@@ -185,15 +184,23 @@ addOperation(value){
 
     }
 
-
-
-
     console.log(this._operation);
 }
 
 //Verifica se tem erro na calculadora
 setError(){
     this.displayCalc = "Error";
+}
+
+addDot(){
+    let lastOperation = this.getlastOperation();
+    console.log(lastOperation)
+    if (this.isOperator(lastOperation) || !lastOperation) {
+        this.pushOperation('0.');
+    }else {
+        this.setLastOperation(lastOperation.toString() + '.');
+    }
+    this.setLastNumberToDisplay();
 }
 
 //Chama as funções para cada botão que for pressionado
@@ -235,7 +242,7 @@ execBtn(value){
             break;
 
         case "ponto":
-            this.addOperation('.');
+            this.addDot();
             break;
 
         case "0":
