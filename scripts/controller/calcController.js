@@ -16,6 +16,32 @@ class CalcController {
         //this.addEventListenerAll();
     }
 
+    //Função colar
+    pasteFromClipboard(){
+        document.addEventListener('paste', e =>{
+            let text = e.clipboardData.getData('Text');
+
+            this.displayCalc = parseFloat(text);
+
+            console.log(text)
+        })
+    }
+
+    //Função copiar
+    copyToClipboard(){
+        let input = document.createElement('input');
+
+        input.value = this.displayCalc;
+
+        document.body.appendChild(input);
+
+        input.select();
+
+        document.execCommand("copy");
+
+        input.remove();
+    }
+
     //Inicia a função da data e horas
     initialize() {
         setInterval(() => {
@@ -23,6 +49,8 @@ class CalcController {
         }, 1000)
 
         this.setLastNumberToDisplay();
+        this.pasteFromClipboard();
+
     }
 
     //Função para receber as coisas e criar um array de Strings
@@ -73,6 +101,10 @@ class CalcController {
                 case "8":
                 case "9":
                     this.addOperation(e.key);
+                break;
+
+                case "c":
+                    if (e.ctrlKey) this.copyToClipboard();
                 break;
 
             }
