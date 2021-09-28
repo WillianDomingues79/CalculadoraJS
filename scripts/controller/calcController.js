@@ -180,9 +180,15 @@ class CalcController {
     }
 
     getResult(){
-        return eval(this._operation.join(""));
-        //Eval faz somar independente se o sinal for uma string
+        try{
+            return eval(this._operation.join(""));
+            //Eval faz somar independente se o sinal for uma string
             //E usa o join para poder tirar as virgulas da separação do array dos numeros
+        }catch(e){
+            setTimeout(() =>{
+                this.setError();
+            }, 1)
+        }
     }
 
     //Faz a soma de fato
